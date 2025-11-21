@@ -2,5 +2,17 @@ name: '522'
 channels:
   - conda-forge
 dependencies:
-  - python=3
-  - pandas
+  - python=3.12
+  - jupyterlab
+  - altair
+  - vl-convert-python>=1.8.0
+  - pyarrow
+  - matplotlib=3.9.*
+  - numpy=2.1.*
+  - pandas=2.2.*
+  - scikit-learn
+  - seaborn=0.13.*
+  - pip
+  - pip:
+      - vegafusion==2.0.3
+      - ucimlrepo==0.0.7
