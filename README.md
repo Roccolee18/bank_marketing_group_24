@@ -14,9 +14,47 @@ Our final classifier performed reasonably well. After applying class-weights, th
 
 The dataset used in this project is the **Bank Marketing Dataset (**[Bank Marketing](https://archive.ics.uci.edu/dataset/222/bank+marketing)), created by researchers at the University of Minho in Portugal (Moro, Cortez, & Rita, 2014). It contains information collected from marketing phone calls conducted by a Portuguese banking institution and is widely used for teaching and research in binary classification. The dataset was sourced from the UCI Machine Learning Repository and can be accessed online. Each row represents a single customer and includes attributes such as employment type, marital status, loan status, previous campaign contacts, call duration, and the final subscription outcome.
 
+## 
+
 ## **Dependencies**
 
 This project relies on a Python environment defined in the included environment.yml file ([Dependencies file](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/environment.yml)). It contains all the necessary libraries for data preprocessing, visualization, and building the logistic regression model. To recreate the environment, users simply need to create the Conda environment using this file before running the analysis.
+
+## Usage
+
+Follow the instructions below to reproduce the analysis:
+
+### Setup
+
+1.  Install Conda on your computer
+
+2.  Clone this GitHub repository
+
+3.  From the project root, create the environment using the provided environment.yml file:
+
+    conda env create -f environment.yml
+
+4.  Activate the environment:
+
+    conda activate 522
+
+5.  Launch VS Code or JupyterLab selecting the activated environment:
+
+    code .
+
+    OR
+
+    jl
+
+### Running the analysis
+
+1.  Open the file [analysis.ipynb](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/analysis.ipynb)
+2.  Select the 522 kernel
+3.  Run all cells to preprocess the dataset, train the regression model, evaluate the accuracy, visualize the results
+
+## **License**
+
+The “Predicting Marketing Campaign Response Using Logistic Regression” report contained in this repository is licensed under the MIT License, wee [LICENSE](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/LICENSE) for more information.
 
 ## **References**
 
@@ -28,6 +66,4 @@ Using Logistic Regression Model to Predict the Success of Bank Telemarketing Y. 
 
 Prediction of Term Deposit in Bank: Using Logistic Model Enjing Jiang, Zihao Wang, Jiaying Zhao, Published in BCP Business & Management 14 December 2022 Business, Computer Science <https://www.semanticscholar.org/paper/Prediction-of-Term-Deposit-in-Bank%3A-Using-Logistic-Jiang-Wang/e36cafceaad636e9b2b558166c16be31a913ad0d>
 
-## **License**
-
-The “Predicting Marketing Campaign Response Using Logistic Regression” report contained in this repository is licensed under the MIT License, wee [LICENSE](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/LICENSE) for more information.\
+## 
