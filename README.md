@@ -4,7 +4,7 @@ Authors: *Rabindranatah Duran Pons, Valeria Siciliano, Rocco Lee, Yasaman Eftekh
 
 Canada, Vancouver
 
-Demo of a data analysis project for DSCI 522 (Data Science workflows); a course in the Master of Data Science program at the University of British Columbia.  2025-2026
+Demo of a data analysis project for DSCI 522 (Data Science workflows); a course in the Master of Data Science program at the University of British Columbia. 2025-2026
 
 ## **About**
 
@@ -48,7 +48,7 @@ Follow the instructions below to reproduce the analysis:
 
 ### Running the analysis
 
-1.  Open the file [analysis.ipynb](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/analysis.ipynb)
+1.  Open the [file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb)
 2.  Select the 522 kernel
 3.  Run all cells to preprocess the dataset, train the regression model, evaluate the accuracy, visualize the results
 
