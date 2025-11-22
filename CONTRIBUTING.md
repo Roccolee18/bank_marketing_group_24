@@ -12,7 +12,7 @@ Fork the Project repository on Github and clone the fork onto your local machine
 
 ``` cmd
 
-git clone https://github.com/YOUR-USERNAME/bank\_marketing\_group\_24.git
+git clone https://github.com/Roccolee18/bank_marketing_group_24.git
 ```
 
 Create the virtual environment our team uses with the provided environment.yml file
