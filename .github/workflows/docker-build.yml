@@ -1,6 +1,9 @@
 name: Update Lock Files and Build Docker Image
 
 on:
+  pull_request:
+    paths:
+      - 'Makefile'
   push:
     # trigger when any one of these files have been changed
     paths:
