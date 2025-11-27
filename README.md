@@ -4,7 +4,7 @@ Authors: *Rabindranatah Duran Pons, Valeria Siciliano, Rocco Lee, Yasaman Eftekh
 
 Canada, Vancouver
 
-Demo of a data analysis project for DSCI 522 (Data Science workflows); a course in the Master of Data Science program at the University of British Columbia. 2025-2026
+Demo of a data analysis project for DSCI 522 (Data Science workflows); a course in the Master of Data Science program at the University of British Columbia. 2025-2026.
 
 ## **About**
 
