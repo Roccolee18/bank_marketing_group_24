@@ -16,11 +16,58 @@ The dataset used in this project is the **Bank Marketing Dataset (**[Bank Market
 
 ## 
 
+## Usage in a fully configured Conda environment
+
+Follow the instructions below to reproduce the analysis in a fully configured Conda environment:
+
+### Setup
+
+1.  Clone this GitHub repository by running the following command:
+
+```bash
+git pull https://github.com/Roccolee18/bank_marketing_group_24
+```
+
+2. Pull the Docker image
+
+Download the latest version of the image from Docker Hub by running this command:
+
+```bash
+docker pull roccolee18/docker-condalock-jupyterlab:latest
+```
+
+3. Run the container with the following command:
+
+```bash
+docker run -it --rm \
+    -p 8888:8888 \
+    -v $(pwd):/workplace \
+    roccolee18/docker-condalock-jupyterlab
+```
+
+When the container starts, you’ll see a URL in the terminal like:
+
+```bash
+http://127.0.0.1:8888/lab
+```
+
+Open this link in your browser.
+
+4. Open and run the notebook
+
+Inside JupyterLab, navigate to the /workplace folder. This mirrors the folder where you ran the command on your host machine.
+
+You can now open and run the  [file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb) in a fully configured Conda environment. Run all cells to preprocess the dataset, train the regression model, evaluate the accuracy, visualize the results.
+
+5. Stop the container
+
+When finished, press Ctrl + C in the terminal to stop the Jupyter server and exit the container.
+
+## Usage in a local environment setup
+
 ## **Dependencies**
 
 This project relies on a Python environment defined in the included environment.yml file ([Dependencies file](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/environment.yml)). It contains all the necessary libraries for data preprocessing, visualization, and building the logistic regression model. To recreate the environment, users simply need to create the Conda environment using this file before running the analysis.
-
-## Usage
 
 Follow the instructions below to reproduce the analysis:
 
@@ -32,19 +79,27 @@ Follow the instructions below to reproduce the analysis:
 
 3.  From the project root, create the environment using the provided environment.yml file:
 
-    conda env create -f environment.yml
+```bash
+conda env create -f environment.yml
+```
 
 4.  Activate the environment:
 
-    conda activate 522
+```bash
+conda activate 522
+```
 
 5.  Launch VS Code or JupyterLab selecting the activated environment:
 
-    code .
+```bash
+code .
+```
 
-    OR
+OR
 
-    jl
+```bash
+jl
+```
 
 ### Running the analysis
 
