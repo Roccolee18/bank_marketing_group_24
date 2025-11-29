@@ -17,4 +17,4 @@ dependencies:
       - vegafusion==2.0.3
       - ucimlrepo==0.0.7
       - pandera==0.20.3
-      - deepcheck
+      - deepchecks==0.19.1
