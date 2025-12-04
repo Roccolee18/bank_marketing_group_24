@@ -48,4 +48,4 @@ def main(dataset_id, output_path, output_name):
 if __name__ == '__main__':
     main()
 
-# python dataLoad.py --dataset_id 222 --output-path ./myfolder --output-name marketing.csv
+# python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
