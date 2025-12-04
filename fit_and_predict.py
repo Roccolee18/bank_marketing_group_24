@@ -110,4 +110,4 @@ def main(save_location):
 if __name__ == '__main__':
     main()
 
-# python model_fitting.py --save_location ./myfolder
+# python fit_and_predict.py --save_location ./myfolder
