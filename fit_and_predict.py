@@ -4,6 +4,16 @@ import pandas as pd
 from ucimlrepo import fetch_ucirepo
 from deepchecks.tabular.checks import LabelDrift , TrainTestFeatureDrift, MultivariateDrift
 from deepchecks.tabular import Dataset, Suite
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import (
+    accuracy_score, classification_report, 
+    roc_auc_score, confusion_matrix
+)
+from sklearn.linear_model import LogisticRegression
+import matplotlib.pyplot as plt
 
 @click.command()
 @click.option('--save_location', type=str, required=True, help="Directory to save generated artifacts to")
