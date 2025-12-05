@@ -40,6 +40,7 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
     X_test = test_dataset.drop("y", axis = 1)
     y_test = test_dataset["y"]
 
+
     # Preprocessor pipeline
     click.echo("Creating preprocessor pipeline")
     model = Pipeline(steps=[
@@ -51,8 +52,9 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
     click.echo("Performing final data validation (label drift)")
     numerical_feats = X_train.select_dtypes(include=["int64", "float64"]).columns
     categorical_feats = X_train.select_dtypes(include=["object"]).columns
-    total_training_dataset = Dataset(pd.concat([X_train, y_train]), label = "y", cat_features = categorical_feats)
-    total_testing_dataset = Dataset(pd.concat([X_test, y_test]), label = "y", cat_features = categorical_feats)
+    validation_categorical_feats = ["job", "marital", "education", "contact", "month", "poutcome"]
+    total_training_dataset = Dataset(X_train, label = y_train, cat_features = validation_categorical_feats)
+    total_testing_dataset = Dataset(X_test, label = y_test, cat_features = validation_categorical_feats)
 
     distribution_check = Suite(
         'Drift Detection Suite',
