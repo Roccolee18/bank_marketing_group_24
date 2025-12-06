@@ -14,8 +14,6 @@ Our final classifier performed reasonably well. After applying class-weights, th
 
 The dataset used in this project is the **Bank Marketing Dataset (**[Bank Marketing](https://archive.ics.uci.edu/dataset/222/bank+marketing)), created by researchers at the University of Minho in Portugal (Moro, Cortez, & Rita, 2014). It contains information collected from marketing phone calls conducted by a Portuguese banking institution and is widely used for teaching and research in binary classification. The dataset was sourced from the UCI Machine Learning Repository and can be accessed online. Each row represents a single customer and includes attributes such as employment type, marital status, loan status, previous campaign contacts, call duration, and the final subscription outcome.
 
-## 
-
 ## Usage in a fully configured Conda environment
 
 Follow the instructions below to reproduce the analysis in a fully configured Conda environment:
@@ -53,13 +51,28 @@ http://127.0.0.1:8888/lab
 
 Open this link in your browser.
 
-4. Open and run the notebook
+4. Open a new terminal to run the analysis scripts
 
-Inside JupyterLab, navigate to the /workplace folder. This mirrors the folder where you ran the command on your host machine.
+The analysis has been split into several python scripts for ease of execution.
 
-You can now open and run the  [file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb) in a fully configured Conda environment. Run all cells to preprocess the dataset, train the regression model, evaluate the accuracy, visualize the results.
+To begin running the scripts, run the following commands in a new terminal. **Make sure the 522 environment is activated**
+The order of execution ideally should be from top to bottom in the /scripts directory.
 
-5. Stop the container
+```bash
+python <script_name>.py --<input arguments>
+```
+
+The required arguments for each script can be found with the following command:
+
+```bash
+python <script_name.py> --help
+```
+
+5. View the report
+
+After all scripts have been run, the .qmd report should be populated with the analysis results, located in the /reports directory
+
+6. Stop the container
 
 When finished, press Ctrl + C in the terminal to stop the Jupyter server and exit the container.
 
