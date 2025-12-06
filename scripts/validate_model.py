@@ -13,19 +13,19 @@ from deepchecks.tabular.checks import (
 
 ## 1. FILE NAME FORMAT VALIDATION
 
-def validate_correct_data_format(df, file_path):
+def validate_correct_data_format(input_path):
     """
     Validate that the data format matches .csv.
     """
+    input_path = Path(input_path)
 
-    file_path = Path(file_path)
-
-    if file_path.suffix.lower() != ".csv":
+    if input_path.suffix.lower() != ".csv":
         raise ValueError(
-            f"File format is not correct: expected '.csv', got '{file_path.suffix}'"
+            f"File format is not correct: expected '.csv', got '{input_path.suffix}'"
         )
 
     click.echo("File format validation passed: .csv file detected.")
+
 
 
 ## 2. COLUMN NAMES VALIDATION
@@ -55,9 +55,6 @@ def validate_column_names(df):
 
 ## 3. NO EMPTY OBSERVATIONS
 
-import pandera as pa
-
-
 def no_empty_observations(df):
     """
     Validation to ensure no row in the dataset is entirely empty (all values missing).
@@ -80,7 +77,8 @@ def no_empty_observations(df):
     # Run validation
     schema.validate(df)
 
-    print(f"No completely empty rows detected. ({n_empty} found)")
+    print("No completely empty rows detected.")
+
 
 
 ## 4. NO ANOMALOUS CORRELATION BETWEEN TARGET/RESPONSE 
@@ -178,23 +176,23 @@ MISSINGNESS_THRESHOLDS = {
 
 # Expected data types per column
 COLUMN_TYPES = {
-    "age": pa.Int,
+    "age": pa.Int64,
     "job": pa.String,
     "marital": pa.String,
     "education": pa.String,
-    "default": pa.Bool,
-    "balance": pa.Int,
-    "housing": pa.Bool,
-    "loan": pa.Bool,
+    "default": pa.String,
+    "balance": pa.Int64,
+    "housing": pa.Int64,
+    "loan": pa.String,
     "contact": pa.String,
-    "day_of_week": pa.Int,
-    "month": pa.String,
-    "duration": pa.Int,
-    "campaign": pa.Int,
-    "pdays": pa.Int,
-    "previous": pa.Int,
+    "day_of_week": pa.Int64,   
+    "month": pa.String,        
+    "duration": pa.Int64,
+    "campaign": pa.Int64,
+    "pdays": pa.Int64,
+    "previous": pa.Int64,
     "poutcome": pa.String,
-    "y": pa.Bool,
+    "y": pa.String,         
 }
 
 
@@ -225,8 +223,8 @@ data_quality_schema = DataFrameSchema(
         )
         for col_name in MISSINGNESS_THRESHOLDS.keys()
     },
-    strict=True,  # only these columns allowed
-    coerce=True,  # attempt to coerce types across the dataframe
+    strict=True,  
+    coerce=True, 
 )
 
 
@@ -237,11 +235,6 @@ def validate_missingness_types_and_duplicates(df):
     - Correct data types in each column (or coercible).
     - No duplicate observations.
     """
-
-    # Optional: print actual missingness vs threshold
-    for col, threshold in MISSINGNESS_THRESHOLDS.items():
-        missing_pct = df[col].isna().mean()
-        click.echo(f"{col}: {missing_pct:.2%} missing (threshold: {threshold:.2%})")
 
     # Validate schema: types + missingness
     try:
@@ -306,15 +299,17 @@ anomaly_schema = DataFrameSchema(
         ),
         "housing": Column(
             int,
-            checks=[
-                Check.in_range(0, 1, include_min=True, include_max=True),
-            ],
+            checks=[Check.isin([0, 1])],
+            nullable=False,
+            coerce=True,
         ),
         "loan": Column(
             int,
             checks=[
-                Check.in_range(0, 1, include_min=True, include_max=True),
+                Check.isin([0, 1]),
             ],
+            nullable=False,
+            coerce=True,
         ),
         "contact": Column(
             str,
@@ -333,20 +328,8 @@ anomaly_schema = DataFrameSchema(
             str,
             checks=[
                 Check.isin(
-                    [
-                        "jan",
-                        "feb",
-                        "mar",
-                        "apr",
-                        "may",
-                        "jun",
-                        "jul",
-                        "aug",
-                        "sep",
-                        "oct",
-                        "nov",
-                        "dec",
-                    ]
+                    ["jan", "feb", "mar", "apr", "may", "jun",
+                     "jul", "aug", "sep", "oct", "nov", "dec"]
                 ),
             ],
         ),
@@ -382,9 +365,9 @@ anomaly_schema = DataFrameSchema(
             nullable=True,
         ),
         "y": Column(
-            int,
+            str,
             checks=[
-                Check.in_range(0, 1, include_min=True, include_max=True),
+                Check.isin(["yes", "no"]),
             ],
         ),
     },
@@ -393,28 +376,18 @@ anomaly_schema = DataFrameSchema(
 )
 
 
-def is_outlier_iqr(series, multiplier=1.5):
-    """
-    Helper to flag outliers in a numeric series using the IQR rule.
-    """
-    Q1 = series.quantile(0.25)
-    Q3 = series.quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - multiplier * IQR
-    upper_bound = Q3 + multiplier * IQR
-    return (series < lower_bound) | (series > upper_bound)
-
-
 def validate_anomalies(df):
     """
     Validate that feature values fall within expected ranges or categories.
     """
     try:
         anomaly_schema.validate(df)
-    except pa.errors.SchemaError as e:
-        raise ValueError(f"Outlier/anomaly validation failed: {e}") from e
-
-    click.echo("Outlier/anomaly validation passed.")
+        print("Outlier/anomaly validation passed.")
+    except pa.errors.SchemaError:
+        raise ValueError(
+            "Outlier/anomaly validation failed. "
+            "Column 'loan' contains unexpected values."
+        ) from None
 
 
 
@@ -505,20 +478,6 @@ def validate_category_levels(df):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @click.command()
 @click.option(
     "--input-path",
@@ -535,7 +494,10 @@ def main(input_path):
 
     click.echo(f"Loading dataset from: {input_path}")
 
-    # Load the data
+    # 1) check file format
+    validate_correct_data_format(input_path)
+
+    # 2) load the data
     try:
         df = pd.read_csv(input_path)
     except Exception as e:
@@ -546,7 +508,6 @@ def main(input_path):
     # VALIDATIONS 
     click.echo("Running validations...")
 
-    validate_correct_data_format(df, input_path)
     validate_column_names(df)
     validate_missingness_types_and_duplicates(df)
     no_empty_observations(df)
@@ -555,8 +516,8 @@ def main(input_path):
     validate_anomalies(df)
     validate_category_levels(df)
 
-
     click.echo("All validations completed successfully.")
+
 
 
 if __name__ == "__main__":
@@ -565,7 +526,4 @@ if __name__ == "__main__":
 
 
 
-
-
-
-# python scripts/validate_model.py --input-path data/raw/bank_marketing.csv
+# python scripts/validate_model.py --input-path data/processed/bank_train.csv
