@@ -29,7 +29,7 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
     Fitting the model.
     """
     # Reading in pickle file from previous step
-    with open('../results/models/bank_preprocessor.pickle', 'rb') as f:
+    with open(preprocessor_pickle, 'rb') as f:
         preprocessor = pickle.load(f)
 
     # Reading in CSVs of training and testing datasets from previous step
@@ -84,7 +84,10 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
 
     # Fitting training data
     click.echo("Fitting the model")
-    model.fit(X_train, y_train)
+    bank_model = model.fit(X_train, y_train)
+
+    with open(os.path.join(save_location, "../models/bank_model.pickle"), 'wb') as f:
+        pickle.dump(bank_model, f)
 
     # Generating artifacts
     click.echo("Generating artifacts")
@@ -97,6 +100,11 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
 
     # Confusion matrix
     cm = confusion_matrix(y_test, y_pred)
+    report_dict = classification_report(y_test, y_pred, output_dict=True)
+    df_report = pd.DataFrame(report_dict).transpose()
+
+    save_path = os.path.join(save_location, "../tables", "classification_results.csv")
+    df_report.to_csv(save_path, index=True)
     sns.heatmap(cm, 
                 annot=True, 
                 fmt="d", 
@@ -139,4 +147,4 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
 if __name__ == '__main__':
     main()
 
-# python fit_and_predict.py --save_location ../results/figures/ --preprocessor_pickle ../results/models/bank_preprocessor.pickle --train_dataset_path ../data/processed/bank_train.csv --test_dataset_path ../data/processed/bank_test.csv
+# python scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv

@@ -125,4 +125,4 @@ def main(data, plot_to):
 if __name__ == '__main__':
     main()
 
-# python scripts/eda.py --data data/raw/bank_marketing.csv --plot-to img
+# python scripts/eda.py --data data/raw/bank_marketing.csv --plot-to results/figures

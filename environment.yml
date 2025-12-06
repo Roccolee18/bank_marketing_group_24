@@ -11,11 +11,12 @@ dependencies:
   - pandas=2.2.3
   - scikit-learn=1.5.2
   - seaborn=0.13.2
+  - click=8.1.7
   - pip=24.3.1
   - pip:
+      - quarto-cli
       - vl-convert-python==1.8.0
       - vegafusion==2.0.3
       - ucimlrepo==0.0.7
       - pandera==0.20.3
       - deepchecks==0.19.1
-      - click==8.3.1
