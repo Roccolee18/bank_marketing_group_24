@@ -102,9 +102,16 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
     cm = confusion_matrix(y_test, y_pred)
     report_dict = classification_report(y_test, y_pred, output_dict=True)
     df_report = pd.DataFrame(report_dict).transpose()
+    cm_df = pd.DataFrame(
+    cm, 
+    index=[f"Actual_{cls}" for cls in [0, 1]],   # replace [0,1] with your actual class labels if different
+    columns=[f"Predicted_{cls}" for cls in [0, 1]]
+    )
 
     save_path = os.path.join(save_location, "../tables", "classification_results.csv")
     df_report.to_csv(save_path, index=True)
+    cm_save_path = os.path.join(save_location, "../tables", "confusion_matrix.csv")
+    cm_df.to_csv(cm_save_path, index=True)
     sns.heatmap(cm, 
                 annot=True, 
                 fmt="d", 

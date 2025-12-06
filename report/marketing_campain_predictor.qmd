@@ -1,18 +1,46 @@
 ---
 title: Predicting Marketing Campaign Response Using Logistic Regression
 author: "Rabindranatah Duran Pons & Yasaman Eftekharypour & Valeria Siciliano & Rocco Lee"
-format: html
+format:
+    html:
+        toc: true
+        toc-depth: 3
+        toc-location: body
 editor: source
 bibliography: references.bib
 execute: 
     echo: false
 ---
 
+```{python}
+import pandas as pd
+from IPython.display import Markdown, display
+df = pd.read_csv("../results/tables/data_info.csv")
+df2 = pd.read_csv("../results/tables/classification_results.csv")
+df3 = pd.read_csv("../results/tables/confusion_matrix.csv", index_col=0)
+recall = round(df2.iloc[2, 2],2)
+precision_positive = round(df2.iloc[1, 1],2)
+
+cm_values = df3.to_numpy(dtype=int)
+
+# Access elements manually using NumPy indexing
+true_neg = cm_values[0, 0]
+false_pos = cm_values[0, 1]
+false_neg = cm_values[1, 0]
+true_pos = cm_values[1, 1]
+
+actual_subscribers = true_pos + false_neg
+actual_non_subscribers = true_neg + false_pos
+
+# Compute accuracy
+accuracy = round((true_neg + true_pos) / (true_neg + true_pos + false_neg + false_pos), 2)
+```
+
 # Summary
 
 In this project, we developed a machine-learning pipeline using logistic regression to predict whether a customer will subscribe to a marketing campaign. The workflow combined a preprocessing stage (StandardScaler and OneHotEncoder) with a logistic regression classifier, followed by training and evaluation using a train/test split.
 
-After applying class-weighting to address the dataset’s imbalance, the model achieved an accuracy of approximately 85% and a ROC-AUC of ~0.91, indicating strong overall discrimination between the subscribed (“yes”) and not-subscribed (“no”) classes. Importantly, class-weighting significantly improved the model’s ability to detect positive cases, giving the “yes” class a recall of 0.81. This shows that the weighted logistic regression approach is better suited for imbalanced marketing data, where correctly identifying potential subscribers is more valuable than simply maximizing accuracy.
+After applying class-weighting to address the dataset’s imbalance, the model achieved an accuracy of   `{python} accuracy` indicating strong overall discrimination between the subscribed (“yes”) and not-subscribed (“no”) classes. Importantly, class-weighting significantly improved the model’s ability to detect positive cases, giving the “yes” class a recall of `{python} recall`. This shows that the weighted logistic regression approach is better suited for imbalanced marketing data, where correctly identifying potential subscribers is more valuable than simply maximizing accuracy.
 
 # Introduction
 
@@ -20,7 +48,7 @@ After applying class-weighting to address the dataset’s imbalance, the model a
 
 Financial institutions frequently rely on direct marketing campaigns to promote new products and services to potential clients. One common approach is telephone-based marketing, where bank representatives call customers to inform them about financial offerings, such as long-term deposits and attempt to persuade them to subscribe. Although this method can be effective, it is also resource-intensive calling uninterested or unlikely customers wastes time, labor, and operational costs. As a result, banks increasingly turn to data-driven decision-making to identify which individuals are most likely to respond positively to a campaign.
 
-The Bank Marketing Dataset was created within this context. Compiled by researchers at the University of Minho in Portugal, it captures detailed information from a series of telephone marketing campaigns run by a Portuguese banking institution. The dataset includes demographic attributes (such as age, employment type, and marital status), financial indicators (such as credit defaults and loan status), and campaign-specific variables (including previous contact outcomes and call duration). The target variable indicates whether a customer ultimately subscribed to a term deposit, making the dataset a classic example of a binary classification problem.
+The Bank Marketing Dataset was created within this context (@moro2014data). Compiled by researchers at the University of Minho in Portugal, it captures detailed information from a series of telephone marketing campaigns run by a Portuguese banking institution. The dataset includes demographic attributes (such as age, employment type, and marital status), financial indicators (such as credit defaults and loan status), and campaign-specific variables (including previous contact outcomes and call duration). The target variable indicates whether a customer ultimately subscribed to a term deposit, making the dataset a classic example of a binary classification problem.
 
 **The main question explored in this project is**:
 
@@ -68,11 +96,11 @@ The dataset includes three main categories of features:
 
 ## Data
 
-The dataset used in this project is the Bank Marketing Dataset (@alsolami2020predicting), created by Moro, Cortez, and Rita (2014) at the University of Minho in Portugal. The data was sourced from the UCI Machine Learning Repository, and can be accessed online at https://archive.ics.uci.edu/dataset/222/bank+marketing. Each row in the dataset represents a single customer contacted during a direct marketing phone campaign, and includes information such as demographic attributes, financial status, call details, previous campaign interactions, and the final outcome indicating whether the customer subscribed to a term deposit.
+The dataset used in this project is the Bank Marketing Dataset (@moro2014data), created by Moro, Cortez, and Rita (2014) at the University of Minho in Portugal. The data was sourced from the UCI Machine Learning Repository, and can be accessed online at https://archive.ics.uci.edu/dataset/222/bank+marketing. Each row in the dataset represents a single customer contacted during a direct marketing phone campaign, and includes information such as demographic attributes, financial status, call details, previous campaign interactions, and the final outcome indicating whether the customer subscribed to a term deposit.
 
 ## Analysis
 
-A logistic regression model was used to predict whether a marketing campaign will be successful or not. All original variables from the dataset were included in the analysis. Before fitting, numerical features were standardized with a StandardScaler, and categorical variables were converted to binary indicators via OneHotEncoder. The dataset was split into 80% training and 20% testing, and class imbalance was addressed by balancing class weights during model training. The model’s performance was evaluated using accuracy and ROC-AUC scores.
+A logistic regression model (@nick2007logistic) was used to predict whether a marketing campaign will be successful or not. All original variables from the dataset were included in the analysis. Before fitting, numerical features were standardized with a StandardScaler, and categorical variables were converted to binary indicators via OneHotEncoder. The dataset was split into 80% training and 20% testing, and class imbalance was addressed by balancing class weights during model training. The model’s performance was evaluated using accuracy and ROC-AUC scores.
 
 The code used to perform this analysis and generate the accompanying report can be found here: https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb
 
@@ -80,11 +108,11 @@ The code used to perform this analysis and generate the accompanying report can 
 
 The logistic regression model developed for this analysis provides meaningful insight into the factors associated with customer subscription, but it also highlights the intrinsic challenges of modeling imbalanced marketing data. Our pipeline combined appropriate preprocessing steps—StandardScaler for numerical features and One-Hot Encoding for categorical variables—with a LogisticRegression classifier to ensure proper handling of the heterogeneous dataset while respecting the Golden Rule and avoiding data leakage.
 
-The performance metrics indicate that the model performs reasonably well overall. The ROC-AUC score of approximately 0.91 suggests strong ability to distinguish between subscribers (“yes”) and non-subscribers (“no”). Although overall accuracy is around 0.85, accuracy alone is not an appropriate metric for this imbalanced context, because the majority class dominates the dataset.
+The performance metrics indicate that the model performs reasonably well overall. The high accuracy suggests strong ability to distinguish between subscribers (“yes”) and non-subscribers (“no”). Although accuracy alone is not an appropriate metric for this imbalanced context, because the majority class dominates the dataset (@li2019issues).
 
-More importantly, the class-weighted logistic regression successfully shifts the model’s focus toward the minority class. The recall for the “yes” class reaches 0.81, a substantial improvement compared to what a non-weighted model would typically achieve on an imbalanced dataset. This indicates that the model is able to identify most customers who eventually subscribe—an outcome that aligns with the core business objective, where failing to detect potential subscribers is far more costly than incorrectly flagging non-subscribers. The precision for the “yes” class is lower (0.42), which is an expected trade-off: by increasing recall and giving more weight to positive cases, the classifier becomes more permissive and produces more false positives. However, in a marketing context—where the cost of contacting an uninterested customer is low compared to the value of identifying a true potential subscriber—this trade-off is acceptable and strategically desirable.
+More importantly, the class-weighted logistic regression successfully shifts the model’s focus toward the minority class. The recall for the “yes” class reaches `{python} recall`, a substantial improvement compared to what a non-weighted model would typically achieve on an imbalanced dataset. This indicates that the model is able to identify most customers who eventually subscribe—an outcome that aligns with the core business objective, where failing to detect potential subscribers is far more costly than incorrectly flagging non-subscribers. The precision for the “yes” class is lower (`{python} precision_positive`), which is an expected trade-off: by increasing recall and giving more weight to positive cases, the classifier becomes more permissive and produces more false positives. However, in a marketing context—where the cost of contacting an uninterested customer is low compared to the value of identifying a true potential subscriber—this trade-off is acceptable and strategically desirable.
 
-The confusion matrix supports this interpretation. Out of 1,058 actual subscribers, the model correctly identifies 862 true positives while misclassifying 196 as non-subscribers. On the other hand, among the majority class, 6,786 non-subscribers are correctly classified, with 1,199 false positives. These numbers reflect a deliberate shift in the decision boundary due to class balancing: the model becomes more sensitive to the minority class at the expense of increasing false positives.
+The confusion matrix (@susmaga2004confusion) supports this interpretation. Out of `{python} actual_subscribers` actual subscribers, the model correctly identifies `{python} true_pos` true positives while misclassifying `{python} false_neg` as non-subscribers. On the other hand, among the majority class, `{python} true_neg` non-subscribers are correctly classified, with `{python} false_pos` false positives. These numbers reflect a deliberate shift in the decision boundary due to class balancing: the model becomes more sensitive to the minority class at the expense of increasing false positives.
 
 Overall, the balanced logistic regression model is appropriate for this business problem. Its ability to capture a large portion of true subscribers, even with lower precision, aligns with the strategic goal of maximizing successful marketing outreach. By prioritizing recall in the positive class, the model supports proactive customer engagement and provides a meaningful foundation for future marketing campaigns.
 
@@ -120,39 +148,51 @@ Before working on the dataset, we need to perform some validation checks to make
 
 # EDA
 
-The distribution of people who subscribed and didn't subscribe can be found below:
+A brief summary of the distribution of numerical and categorical variables can be found in @tbl-info:
 
-placeholder
+```{python}
+#| label: tbl-info
+#| tbl-cap: Numerical distribution of variables.
+display(Markdown(df.to_markdown(index=False)))
+```
 
-A comparison of the distribution of subscribed people among age can be found below:
+@fig-target-count shows the distribution of people who subscribed and didn't subscribe can be found below:
 
-placeholder
+![Distribution on the response variable.](../results/figures/target_counts.png){#fig-target-count}
+
+
+@fig-age-density shows a comparison of the distribution of subscribed people among age can be found below:
+
+![Response variable by age.](../results/figures/age_density.png){#fig-age-density}
 
 This shows that age can be a very good predictor for subsciption when used on its own.
 
-placeholder
+![Response variable by balance.](../results/figures/balance_density.png){#fig-balance-density}
 
-In the plot above we can see that the distribution of balance is right skwed and it might not be a good predictor on its own for subscription. However, when considering other variables, it might be useful.
+In @fig-balance-density we can see that the distribution of balance is right skwed and it might not be a good predictor on its own for subscription. However, when considering other variables, it might be useful.
 
 The following shows a heatmap of the correlation among all the variables:
 
-placeholder
+![Correlation matrix.](../results/figures/correlation_matrix.png){#fig-correlation-matrix}
 
-We can see that there is no multicolinearity among different variables.
-
-placeholder
-
-# Preprocessing
-
-placeholder
+@fig-correlation-matrix shows a heatmap of the correlation between variables. We can spot that there really isn't multicolinearity between the variables.
 
 # Fitting the model and making predictions
 
-placeholder
+After fitting the logistic regression model, we can visualize the results by creating the confusion matrix. This is displayed in @fig-confusion-matrix:
 
-### Data Validation - Target/Response Variable Follows Expected Distribution
-This test is out of order because it requires the data to be split into training and testing datasets before being ran.
+![Confusion matrix.](../results/figures/confusion_matrix.jpg){#fig-confusion-matrix}
 
-placeholder
+Additionally, we can look at other metrics of the model. These are displayed in @tbl-classification-report:
+
+```{python}
+#| label: tbl-classification-report
+#| tbl-cap: Classification results of the model.
+display(Markdown(df2.to_markdown(index=False)))
+```
+
+![Feature importance.](../results/figures/feature_importance.jpg){#fig-feature-importance}
+
+@fig-feature-importance shows that p_outcome_success and duration are the most important features for this model while job_management and pdays are the least important. 
 
 # References
