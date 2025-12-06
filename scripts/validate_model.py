@@ -180,19 +180,19 @@ COLUMN_TYPES = {
     "job": pa.String,
     "marital": pa.String,
     "education": pa.String,
-    "default": pa.String,
+    "default": pa.Bool,   
     "balance": pa.Int64,
-    "housing": pa.Int64,
-    "loan": pa.String,
+    "housing": pa.Bool,   
+    "loan": pa.Bool,     
     "contact": pa.String,
-    "day_of_week": pa.Int64,   
-    "month": pa.String,        
+    "day_of_week": pa.Int64,
+    "month": pa.String,
     "duration": pa.Int64,
     "campaign": pa.Int64,
     "pdays": pa.Int64,
     "previous": pa.Int64,
     "poutcome": pa.String,
-    "y": pa.String,         
+    "y": pa.Bool,        
 }
 
 
@@ -286,10 +286,10 @@ anomaly_schema = DataFrameSchema(
             nullable=True,
         ),
         "default": Column(
-            str,
-            checks=[
-                Check.isin(["no", "yes"]),
-            ],
+            bool,
+            checks=[Check.isin([True, False])],
+            nullable=False,
+            coerce=True,
         ),
         "balance": Column(
             int,
@@ -298,16 +298,14 @@ anomaly_schema = DataFrameSchema(
             ],
         ),
         "housing": Column(
-            int,
-            checks=[Check.isin([0, 1])],
+            bool,
+            checks=[Check.isin([True, False])],
             nullable=False,
             coerce=True,
         ),
         "loan": Column(
-            int,
-            checks=[
-                Check.isin([0, 1]),
-            ],
+            bool,
+            checks=[Check.isin([True, False])],
             nullable=False,
             coerce=True,
         ),
@@ -329,7 +327,7 @@ anomaly_schema = DataFrameSchema(
             checks=[
                 Check.isin(
                     ["jan", "feb", "mar", "apr", "may", "jun",
-                     "jul", "aug", "sep", "oct", "nov", "dec"]
+                    "jul", "aug", "sep", "oct", "nov", "dec"]
                 ),
             ],
         ),
@@ -365,10 +363,10 @@ anomaly_schema = DataFrameSchema(
             nullable=True,
         ),
         "y": Column(
-            str,
-            checks=[
-                Check.isin(["yes", "no"]),
-            ],
+            bool,
+            checks=[Check.isin([True, False])],
+            nullable=False,
+            coerce=True,
         ),
     },
     strict=True,
