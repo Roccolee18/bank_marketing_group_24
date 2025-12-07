@@ -25,7 +25,7 @@ def main(data, plot_to):
     print(df.info())
 
     save_path = os.path.join(plot_to, "../tables", "data_info.csv")
-    df.describe(include='all').to_csv(save_path)
+    df.describe(include='number').to_csv(save_path)
 
     print("\n=== VALUE COUNTS (y) ===")
     print(df['y'].value_counts())

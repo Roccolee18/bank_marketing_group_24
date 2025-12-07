@@ -148,7 +148,7 @@ Before working on the dataset, we need to perform some validation checks to make
 
 # EDA
 
-A brief summary of the distribution of numerical and categorical variables can be found in @tbl-info:
+A brief summary of the distribution of numerical variables can be found in @tbl-info:
 
 ```{python}
 #| label: tbl-info
