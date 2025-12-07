@@ -1,6 +1,6 @@
 # Predicting Marketing Campaign Response Using Logistic Regression
 
-Authors: *Rabindranatah Duran Pons, Valeria Siciliano, Rocco Lee, Yasaman Eftekharypur*
+Authors: *Rabindranath Duran Pons, Valeria Siciliano, Rocco Lee, Yasaman Eftekharypur*
 
 Canada, Vancouver
 
@@ -14,15 +14,19 @@ Our final classifier performed reasonably well. After applying class-weights, th
 
 The dataset used in this project is the **Bank Marketing Dataset (**[Bank Marketing](https://archive.ics.uci.edu/dataset/222/bank+marketing)), created by researchers at the University of Minho in Portugal (Moro, Cortez, & Rita, 2014). It contains information collected from marketing phone calls conducted by a Portuguese banking institution and is widely used for teaching and research in binary classification. The dataset was sourced from the UCI Machine Learning Repository and can be accessed online. Each row represents a single customer and includes attributes such as employment type, marital status, loan status, previous campaign contacts, call duration, and the final subscription outcome.
 
-## 
+## Usage in a fully configured Conda environment (Recommended)
 
-## Usage in a fully configured Conda environment
+## **Dependencies**
+
+- [Docker](https://www.docker.com/) 
 
 Follow the instructions below to reproduce the analysis in a fully configured Conda environment:
 
 ### Setup
 
-1.  Clone this GitHub repository by running the following command:
+> If you are using Windows or Mac, make sure Docker Desktop is running.
+
+1.  Clone this GitHub repository by running the following command and navigate to the root of the project:
 
 ```bash
 git pull https://github.com/Roccolee18/bank_marketing_group_24
@@ -51,23 +55,72 @@ When the container starts, you’ll see a URL in the terminal like:
 http://127.0.0.1:8888/lab
 ```
 
-Open this link in your browser.
+Open the link in a new browser window to ensure the Docker image is set up properly.
 
-4. Open and run the notebook
 
-Inside JupyterLab, navigate to the /workplace folder. This mirrors the folder where you ran the command on your host machine.
+4. Run the analysis scripts
 
-You can now open and run the  [file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb) in a fully configured Conda environment. Run all cells to preprocess the dataset, train the regression model, evaluate the accuracy, visualize the results.
+**These next few steps should be completed in the terminal of the newly opened browser after the docker container is set up (http://127.0.0.1:8888/lab)**
 
-5. Stop the container
+The analysis has been split into several python scripts for ease of execution.
+
+To begin running the scripts, run the following commands in a new terminal, again, in the environment created by the docker container in the previous step. The order of execution ideally should be the following:
+
+1.  Run data loading script:
+
+```bash
+python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
+```
+
+2. Run data validation script:
+
+```bash
+python scripts/validate_model.py --input-path data/processed/bank_train.csv
+```
+
+3. Run split and preprocessing script:
+
+```bash
+python scripts/split_n_preprocess.py --raw-data data/raw/bank_marketing.csv --data-to data/processed --preprocessor-to results/models
+```
+
+4. Run eda script:
+
+```bash
+python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
+```
+
+5. Run fit and predict script:
+
+```bash
+python scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
+```
+
+The required arguments for each script can be found with the following command:
+
+```bash
+python <script_name.py> --help
+```
+
+5. Generate the report and view it on your browser (Google Chrome is recommended):
+
+After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts. To generate the final html report, run the following command:
+
+```bash
+quarto render report/marketing_campain_predictor.qmd --to html
+```
+
+After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
+
+6. Stop the container
 
 When finished, press Ctrl + C in the terminal to stop the Jupyter server and exit the container.
 
-## Usage in a local environment setup
+## Usage in a local environment setup (Alternative to Docker setup)
 
 ## **Dependencies**
 
-This project relies on a Python environment defined in the included environment.yml file ([Dependencies file](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/environment.yml)). It contains all the necessary libraries for data preprocessing, visualization, and building the logistic regression model. To recreate the environment, users simply need to create the Conda environment using this file before running the analysis.
+This project relies on a Python environment defined in the included environment.yml file ([Dependencies file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/environment.yml)). It contains all the necessary libraries for data preprocessing, visualization, and building the logistic regression model. To recreate the environment, users simply need to create the Conda environment using this file before running the analysis.
 
 Follow the instructions below to reproduce the analysis:
 
@@ -103,13 +156,70 @@ jl
 
 ### Running the analysis
 
-1.  Open the [file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb)
-2.  Select the 522 kernel
-3.  Run all cells to preprocess the dataset, train the regression model, evaluate the accuracy, visualize the results
+1.  Run the scripts
+
+The analysis has been split into several python scripts for ease of execution.
+
+To begin running the scripts, run the following commands in a new terminal in the git directory. **Ensure that the 522 environment created from the environment.yml file in the preivous step is active**
+The order of execution ideally should be the following:
+
+1.  Run data loading script:
+
+```bash
+python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
+```
+
+2. Run data validation script:
+
+```bash
+python scripts/validate_model.py --input-path data/processed/bank_train.csv
+```
+
+3. Run split and preprocessing script:
+
+```bash
+python scripts/split_n_preprocess.py --raw-data data/raw/bank_marketing.csv --data-to data/processed --preprocessor-to results/models
+```
+
+4. Run eda script:
+
+```bash
+python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
+```
+
+5. Run fit and predict script:
+
+```bash
+python scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
+```
+
+The required arguments for each script can be found with the following command:
+
+```bash
+python <script_name.py> --help
+```
+
+2. Generate the report and view it on your browser (Google Chrome is recommended):
+
+After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts. To generate the final html report, run the following command:
+
+```bash
+quarto render report/marketing_campain_predictor.qmd --to html
+```
+
+After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
+
+3. Deactivate the environment
+
+To return your environment back to its default state, run the following command:
+
+```bash
+conda deactivate
+```
 
 ## **License**
 
-The “Predicting Marketing Campaign Response Using Logistic Regression” report contained in this repository is licensed under the MIT License, wee [LICENSE](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/LICENSE) for more information.
+The “Predicting Marketing Campaign Response Using Logistic Regression” report contained in this repository is licensed under the MIT License, see [LICENSE](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/LICENSE) for more information.
 
 ## **References**
 
