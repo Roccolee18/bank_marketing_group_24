@@ -24,6 +24,9 @@ def main(data, plot_to):
     print("\n=== INFO ===")
     print(df.info())
 
+    save_path = os.path.join(plot_to, "../tables", "data_info.csv")
+    df.describe(include='number').to_csv(save_path)
+
     print("\n=== VALUE COUNTS (y) ===")
     print(df['y'].value_counts())
 
@@ -125,4 +128,4 @@ def main(data, plot_to):
 if __name__ == '__main__':
     main()
 
-# python scripts/eda.py --data data/raw/bank_marketing.csv --plot-to img
+# python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
