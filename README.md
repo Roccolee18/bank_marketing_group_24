@@ -14,7 +14,7 @@ Our final classifier performed reasonably well. After applying class-weights, th
 
 The dataset used in this project is the **Bank Marketing Dataset (**[Bank Marketing](https://archive.ics.uci.edu/dataset/222/bank+marketing)), created by researchers at the University of Minho in Portugal (Moro, Cortez, & Rita, 2014). It contains information collected from marketing phone calls conducted by a Portuguese banking institution and is widely used for teaching and research in binary classification. The dataset was sourced from the UCI Machine Learning Repository and can be accessed online. Each row represents a single customer and includes attributes such as employment type, marital status, loan status, previous campaign contacts, call duration, and the final subscription outcome.
 
-## Usage in a fully configured Conda environment
+## Usage in a fully configured Conda environment (Recommended)
 
 Follow the instructions below to reproduce the analysis in a fully configured Conda environment:
 
@@ -49,13 +49,16 @@ When the container starts, you’ll see a URL in the terminal like:
 http://127.0.0.1:8888/lab
 ```
 
-Open this link in your browser.
+Open the link in a new browser window to ensure the Docker image is set up properly.
 
-4. Open a new terminal to run the analysis scripts
+
+4. Run the analysis scripts
+
+**These next few steps shouold be completed in the terminal of the newly opened browser after the docker container is set up (http://127.0.0.1:8888/lab)**
 
 The analysis has been split into several python scripts for ease of execution.
 
-To begin running the scripts, run the following commands in a new terminal. **Make sure the 522 environment is activated**
+To begin running the scripts, run the following commands in a new terminal, again, in the environment created by the docker container in the previous step
 The order of execution ideally should be from top to bottom in the /scripts directory.
 
 ```bash
@@ -70,13 +73,13 @@ python <script_name.py> --help
 
 5. View the report
 
-After all scripts have been run, the .qmd report should be populated with the analysis results, located in the /reports directory
+After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts.
 
 6. Stop the container
 
 When finished, press Ctrl + C in the terminal to stop the Jupyter server and exit the container.
 
-## Usage in a local environment setup
+## Usage in a local environment setup (Alternative to Docker setup)
 
 ## **Dependencies**
 
@@ -116,9 +119,34 @@ jl
 
 ### Running the analysis
 
-1.  Open the [file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb)
-2.  Select the 522 kernel
-3.  Run all cells to preprocess the dataset, train the regression model, evaluate the accuracy, visualize the results
+1.  Run the scripts
+
+The analysis has been split into several python scripts for ease of execution.
+
+To begin running the scripts, run the following commands in a new terminal in the git directory. **Ensure that the 522 environment created from the environment.yml file in the preivous step is active**
+The order of execution ideally should be from top to bottom (order can be found in the /scripts directory)
+
+```bash
+python <script_name>.py --<input arguments>
+```
+
+The required arguments for each script can be found with the following command:
+
+```bash
+python <script_name.py> --help
+```
+
+2. View the report
+
+After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts.
+
+3. Deactivate the environment
+
+To return your environment back to its default state, run the following command:
+
+```bash
+conda deactivate
+```
 
 ## **License**
 
