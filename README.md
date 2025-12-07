@@ -1,6 +1,6 @@
 # Predicting Marketing Campaign Response Using Logistic Regression
 
-Authors: *Rabindranatah Duran Pons, Valeria Siciliano, Rocco Lee, Yasaman Eftekharypur*
+Authors: *Rabindranath Duran Pons, Valeria Siciliano, Rocco Lee, Yasaman Eftekharypur*
 
 Canada, Vancouver
 
@@ -60,7 +60,7 @@ Open the link in a new browser window to ensure the Docker image is set up prope
 
 4. Run the analysis scripts
 
-**These next few steps shouold be completed in the terminal of the newly opened browser after the docker container is set up (http://127.0.0.1:8888/lab)**
+**These next few steps should be completed in the terminal of the newly opened browser after the docker container is set up (http://127.0.0.1:8888/lab)**
 
 The analysis has been split into several python scripts for ease of execution.
 
@@ -93,7 +93,7 @@ python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/fig
 5. Run fit and predict script:
 
 ```bash
-ython scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
+python scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
 ```
 
 The required arguments for each script can be found with the following command:
@@ -190,7 +190,7 @@ python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/fig
 5. Run fit and predict script:
 
 ```bash
-ython scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
+python scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
 ```
 
 The required arguments for each script can be found with the following command:
@@ -219,7 +219,7 @@ conda deactivate
 
 ## **License**
 
-The “Predicting Marketing Campaign Response Using Logistic Regression” report contained in this repository is licensed under the MIT License, wee [LICENSE](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/LICENSE) for more information.
+The “Predicting Marketing Campaign Response Using Logistic Regression” report contained in this repository is licensed under the MIT License, see [LICENSE](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/LICENSE) for more information.
 
 ## **References**
 
