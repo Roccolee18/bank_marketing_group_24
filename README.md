@@ -16,11 +16,17 @@ The dataset used in this project is the **Bank Marketing Dataset (**[Bank Market
 
 ## Usage in a fully configured Conda environment (Recommended)
 
+## **Dependencies**
+
+- [Docker](https://www.docker.com/) 
+
 Follow the instructions below to reproduce the analysis in a fully configured Conda environment:
 
 ### Setup
 
-1.  Clone this GitHub repository by running the following command:
+> If you are using Windows or Mac, make sure Docker Desktop is running.
+
+1.  Clone this GitHub repository by running the following command and navigate to the root of the project:
 
 ```bash
 git pull https://github.com/Roccolee18/bank_marketing_group_24
@@ -58,11 +64,36 @@ Open the link in a new browser window to ensure the Docker image is set up prope
 
 The analysis has been split into several python scripts for ease of execution.
 
-To begin running the scripts, run the following commands in a new terminal, again, in the environment created by the docker container in the previous step
-The order of execution ideally should be from top to bottom in the /scripts directory.
+To begin running the scripts, run the following commands in a new terminal, again, in the environment created by the docker container in the previous step. The order of execution ideally should be the following:
+
+1.  Run data loading script:
 
 ```bash
-python <script_name>.py --<input arguments>
+python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
+```
+
+2. Run data validation script:
+
+```bash
+python scripts/validate_model.py --input-path data/processed/bank_train.csv
+```
+
+3. Run split and preprocessing script:
+
+```bash
+python scripts/split_n_preprocess.py --raw-data data/raw/bank_marketing.csv --data-to data/processed --preprocessor-to results/models
+```
+
+4. Run eda script:
+
+```bash
+python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
+```
+
+5. Run fit and predict script:
+
+```bash
+ython scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
 ```
 
 The required arguments for each script can be found with the following command:
@@ -71,9 +102,15 @@ The required arguments for each script can be found with the following command:
 python <script_name.py> --help
 ```
 
-5. View the report
+5. Generate the report and view it on your browser (Google Chrome is recommended):
 
-After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts.
+After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts. To generate the final html report, run the following command:
+
+```bash
+quarto render report/marketing_campain_predictor.qmd --to html
+```
+
+After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
 
 6. Stop the container
 
@@ -83,7 +120,7 @@ When finished, press Ctrl + C in the terminal to stop the Jupyter server and exi
 
 ## **Dependencies**
 
-This project relies on a Python environment defined in the included environment.yml file ([Dependencies file](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/environment.yml)). It contains all the necessary libraries for data preprocessing, visualization, and building the logistic regression model. To recreate the environment, users simply need to create the Conda environment using this file before running the analysis.
+This project relies on a Python environment defined in the included environment.yml file ([Dependencies file](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/environment.yml)). It contains all the necessary libraries for data preprocessing, visualization, and building the logistic regression model. To recreate the environment, users simply need to create the Conda environment using this file before running the analysis.
 
 Follow the instructions below to reproduce the analysis:
 
@@ -124,10 +161,36 @@ jl
 The analysis has been split into several python scripts for ease of execution.
 
 To begin running the scripts, run the following commands in a new terminal in the git directory. **Ensure that the 522 environment created from the environment.yml file in the preivous step is active**
-The order of execution ideally should be from top to bottom (order can be found in the /scripts directory)
+The order of execution ideally should be the following:
+
+1.  Run data loading script:
 
 ```bash
-python <script_name>.py --<input arguments>
+python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
+```
+
+2. Run data validation script:
+
+```bash
+python scripts/validate_model.py --input-path data/processed/bank_train.csv
+```
+
+3. Run split and preprocessing script:
+
+```bash
+python scripts/split_n_preprocess.py --raw-data data/raw/bank_marketing.csv --data-to data/processed --preprocessor-to results/models
+```
+
+4. Run eda script:
+
+```bash
+python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
+```
+
+5. Run fit and predict script:
+
+```bash
+ython scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
 ```
 
 The required arguments for each script can be found with the following command:
@@ -136,9 +199,15 @@ The required arguments for each script can be found with the following command:
 python <script_name.py> --help
 ```
 
-2. View the report
+2. Generate the report and view it on your browser (Google Chrome is recommended):
 
-After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts.
+After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts. To generate the final html report, run the following command:
+
+```bash
+quarto render report/marketing_campain_predictor.qmd --to html
+```
+
+After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
 
 3. Deactivate the environment
 
