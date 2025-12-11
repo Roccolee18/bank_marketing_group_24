@@ -11,3 +11,4 @@ def test_fit_and_predict():
 
     assert conf_matrix_directory.exists(), f"File {conf_matrix_directory} does not exist"
     assert feat_importance_directory.exists(), f"File {feat_importance_directory} does not exist"
+    return True

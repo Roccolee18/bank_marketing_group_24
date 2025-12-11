@@ -11,4 +11,4 @@ from src.test_fit_and_predict import test_fit_and_predict
 def testing_test_fit_and_predict():
     
     """Test using the imported function"""
-    assert test_fit_and_predict() == None
+    assert test_fit_and_predict() == True
