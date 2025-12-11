@@ -2,7 +2,6 @@ import pytest
 from pathlib import Path
 import os
 
-
 def test_fit_and_predict():
     # Using PyTest assert statements to make sure figures generated from the fit_and_predict script exist
     project_root = Path(__file__).parent.parent

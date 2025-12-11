@@ -3,11 +3,6 @@ import click
 import pandas as pd
 import numpy as np
 from ucimlrepo import fetch_ucirepo
-from deepchecks.tabular.checks import LabelDrift , TrainTestFeatureDrift, MultivariateDrift
-from deepchecks.tabular import Dataset, Suite
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import (
     accuracy_score, classification_report, 
@@ -17,6 +12,14 @@ from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
 import pickle
 import seaborn as sns
+from pathlib import Path
+import sys
+
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+from src.validation_after_splitting import validation_after_splitting
+from src.create_conf_matrix import create_conf_matrix
+from src.create_feat_imp import create_feat_imp
 
 @click.command()
 @click.option('--save_location', type=str, required=True, help="Directory to save generated artifacts to")
@@ -49,38 +52,8 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
     ])
 
     # Final data validation for label drift in training and testing datasets
-    click.echo("Performing final data validation (label drift)")
-    numerical_feats = X_train.select_dtypes(include=["int64", "float64"]).columns
-    categorical_feats = X_train.select_dtypes(include=["object"]).columns
-    validation_categorical_feats = ["job", "marital", "education", "contact", "month", "poutcome"]
-    total_training_dataset = Dataset(X_train, label = y_train, cat_features = validation_categorical_feats)
-    total_testing_dataset = Dataset(X_test, label = y_test, cat_features = validation_categorical_feats)
-
-    distribution_check = Suite(
-        'Drift Detection Suite',
-        LabelDrift().add_condition_drift_score_less_than(0.15),
-        MultivariateDrift().add_condition_overall_drift_value_less_than(0.15)
-    )
-
-    suite_result = distribution_check.run(total_training_dataset, total_testing_dataset)
-    has_drift = False
-
-    for check_result in suite_result.results:
-        print(f"\nCheck: {check_result.get_header()}")
-    
-        if hasattr(check_result, 'exception'):
-            print(f"  ❌ Check failed to run: {check_result.exception}")
-            continue
-    
-        if check_result.conditions_results:
-            for condition_result in check_result.conditions_results:
-                status = "✓" if condition_result.is_pass() else "❌"
-                click.echo(f"  {status} {condition_result.name}")
-                if not condition_result.is_pass():
-                    has_drift = True
-                    print(f"     Details: {condition_result.details}")
-        else:
-            print("  No conditions set for this check")
+    # categorical and features are needed later on in the script, so returning those from validation_after_splitting
+    categorical_feats, numerical_feats = validation_after_splitting(X_train, y_train, X_test, y_test)
 
     # Fitting training data
     click.echo("Fitting the model")
@@ -99,33 +72,7 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
     print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
     # Confusion matrix
-    cm = confusion_matrix(y_test, y_pred)
-    report_dict = classification_report(y_test, y_pred, output_dict=True)
-    df_report = pd.DataFrame(report_dict).transpose()
-    cm_df = pd.DataFrame(
-    cm, 
-    index=[f"Actual_{cls}" for cls in [0, 1]],   # replace [0,1] with your actual class labels if different
-    columns=[f"Predicted_{cls}" for cls in [0, 1]]
-    )
-
-    save_path = os.path.join(save_location, "../tables", "classification_results.csv")
-    df_report.to_csv(save_path, index=True)
-    cm_save_path = os.path.join(save_location, "../tables", "confusion_matrix.csv")
-    cm_df.to_csv(cm_save_path, index=True)
-    sns.heatmap(cm, 
-                annot=True, 
-                fmt="d", 
-                cmap="Blues", 
-                xticklabels=["no", "yes"],
-                yticklabels=["no", "yes"]
-                )
-    plt.title("Confusion Matrix")
-    plt.xlabel("Predicted")
-    plt.ylabel("Actual")
-    plt.show()
-    save_path_sns = os.path.join(save_location + "confusion_matrix.jpg")
-    plt.savefig(save_path_sns)
-    click.echo("Confusion matrix image generated")
+    create_conf_matrix(y_test, y_pred, save_location)
     
     # Feature Importance (for logistic regression) Analysis
     # This is a bit tricky with pipelines — we extract processed feature names
@@ -137,18 +84,9 @@ def main(save_location, preprocessor_pickle, train_dataset_path, test_dataset_pa
     # Get coefficients
     coeffs = model.named_steps["classifier"].coef_[0]
 
-    feat_imp = pd.DataFrame({
-        "feature": feature_names,
-        "importance": coeffs
-    }).sort_values(by="importance", ascending=False)
+    # Generate feature importance bar chart
+    create_feat_imp(feature_names, coeffs, save_location)
 
-    print(feat_imp.head(10))
-    feat_imp.head(20).plot(kind="bar", x="feature", y="importance", figsize=(10,5))
-    plt.title("Feature Importance (Logistic Regression Coefficients)")
-    plt.show()
-    save_path_feat_imp = os.path.join(save_location + "feature_importance.jpg")
-    plt.savefig(save_path_feat_imp, bbox_inches = "tight", dpi = 300)
-    click.echo("Feature importance chart generated")
     click.echo("Analysis complete!")
 
 if __name__ == '__main__':
