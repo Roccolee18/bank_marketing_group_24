@@ -29,7 +29,7 @@ Follow the instructions below to reproduce the analysis in a fully configured Co
 1.  Clone this GitHub repository by running the following command and navigate to the root of the project:
 
 ```bash
-git pull https://github.com/Roccolee18/bank_marketing_group_24
+git clone https://github.com/Roccolee18/bank_marketing_group_24
 ```
 
 2. Pull the Docker image
