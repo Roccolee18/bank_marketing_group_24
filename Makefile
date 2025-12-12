@@ -36,7 +36,9 @@ step_report: report/marketing_campain_predictor.qmd step_evaluation
 	quarto render report/marketing_campain_predictor.qmd --to html
 
 clean:
+	rm -f data/raw/*
 	rm -f data/processed/*
 	rm -f results/figures/*
+	rm -f results/models/*
 	rm -f results/tables/*
 	rm -f report/marketing_campain_predictor.html
