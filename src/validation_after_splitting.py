@@ -19,6 +19,8 @@ def validation_after_splitting(X_train, y_train, X_test, y_test):
     suite_result = distribution_check.run(total_training_dataset, total_testing_dataset)
     has_drift = False
 
+    print(numerical_feats.shape)
+
     for check_result in suite_result.results:
         print(f"\nCheck: {check_result.get_header()}")
     
