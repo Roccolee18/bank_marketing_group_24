@@ -179,7 +179,7 @@ def main(data, plot_to):
     PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     # Create figures folder inside the project root
-    table_dir = os.path.join(PROJECT_ROOT, "tables")
+    table_dir = os.path.join(PROJECT_ROOT, "results/tables")
     os.makedirs(table_dir, exist_ok=True)
     df.describe(include='number').to_csv(os.path.join(table_dir, "data_info.csv"))
 
