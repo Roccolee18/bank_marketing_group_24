@@ -94,6 +94,27 @@ def bar_chart(df, x_title, y_title, plot_to):
     return plot_y
 
 
+'''
+    plot_age = (
+        alt.Chart(df)
+        .transform_density(
+            density="age",
+            groupby=["y"],
+            as_=["age", "density"]
+        )
+        .mark_area(opacity=0.4)
+        .encode(
+            x=alt.X("age:Q", title="Age"),
+            y=alt.Y("density:Q", title="Density"),
+            color=alt.Color("y:N", title="Subscribed")
+        )
+        .properties(title="Age Density by Subscription")
+    )
+    plot_age.save(os.path.join(plot_to, "age_density.png"))
+'''
+
+
+
 def density_plot(df, density_param, group_by, x_title, y_title, plot_title, 
                  color_title, plot_to):
     plot_age = (
@@ -105,7 +126,7 @@ def density_plot(df, density_param, group_by, x_title, y_title, plot_title,
         )
         .mark_area(opacity=0.4)
         .encode(
-            x=alt.X("age:Q", title=x_title),
+            x=alt.X(f"{density_param}:Q", title=x_title),
             y=alt.Y("density:Q", title=y_title),
             color=alt.Color("y:N", title=color_title)
         )
@@ -158,10 +179,9 @@ def main(data, plot_to):
     PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     # Create figures folder inside the project root
-    figures_dir = os.path.join(PROJECT_ROOT, plot_to)
-    os.makedirs(figures_dir, exist_ok=True)
-
-    df.describe(include='number').to_csv(os.path.join(figures_dir, "data_info.csv"))
+    table_dir = os.path.join(PROJECT_ROOT, "tables")
+    os.makedirs(table_dir, exist_ok=True)
+    df.describe(include='number').to_csv(os.path.join(table_dir, "data_info.csv"))
 
     print("\n=== VALUE COUNTS (y) ===")
     print(df['y'].value_counts())
@@ -184,6 +204,10 @@ def main(data, plot_to):
 
     # Ensure plot directory exists
     os.makedirs(plot_to, exist_ok=True)
+
+    # Create figures folder inside the project root
+    figures_dir = os.path.join(PROJECT_ROOT, plot_to)
+    os.makedirs(figures_dir, exist_ok=True)
 
     alt.data_transformers.enable('vegafusion')
 
