@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-import pandera as pa
+import pandera as pa 
 
 from scripts.validate_model import (
     validate_correct_data_format,
