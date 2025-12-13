@@ -7,7 +7,7 @@ def test_create_conf_matrix():
 
     # Testing for figure existance
     project_root = Path(__file__).parent.parent
-    conf_matrix_directory = project_root / "results" / "figures" / "confusion_matrix.jpg"
+    conf_matrix_directory = project_root / "results" / "figures" / "confusion_matrix.png"
 
     assert conf_matrix_directory.exists(), f"File {conf_matrix_directory} does not exist"
 
