@@ -33,6 +33,6 @@ def create_conf_matrix(y_test, y_pred, save_location):
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
     plt.show()
-    save_path_sns = os.path.join(save_location + "confusion_matrix.jpg")
+    save_path_sns = os.path.join(save_location + "confusion_matrix.png")
     plt.savefig(save_path_sns)
     click.echo("Confusion matrix image generated")

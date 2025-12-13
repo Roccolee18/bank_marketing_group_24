@@ -181,7 +181,7 @@ The following shows a heatmap of the correlation among all the variables:
 
 After fitting the logistic regression model, we can visualize the results by creating the confusion matrix. This is displayed in @fig-confusion-matrix:
 
-![Confusion matrix.](../results/figures/confusion_matrix.jpg){#fig-confusion-matrix}
+![Confusion matrix.](../results/figures/confusion_matrix.png){#fig-confusion-matrix}
 
 Additionally, we can look at other metrics of the model. These are displayed in @tbl-classification-report:
 
@@ -191,7 +191,7 @@ Additionally, we can look at other metrics of the model. These are displayed in 
 display(Markdown(df2.to_markdown(index=False)))
 ```
 
-![Feature importance.](../results/figures/feature_importance.jpg){#fig-feature-importance}
+![Feature importance.](../results/figures/feature_importance.png){#fig-feature-importance}
 
 @fig-feature-importance shows that p_outcome_success and duration are the most important features for this model while job_management and pdays are the least important. 
 
