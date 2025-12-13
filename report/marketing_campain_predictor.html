@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -47,14 +47,15 @@ div.csl-indent {
 <script src="marketing_campain_predictor_files/libs/clipboard/clipboard.min.js"></script>
 <script src="marketing_campain_predictor_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="marketing_campain_predictor_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="marketing_campain_predictor_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="marketing_campain_predictor_files/libs/quarto-html/popper.min.js"></script>
 <script src="marketing_campain_predictor_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="marketing_campain_predictor_files/libs/quarto-html/anchor.min.js"></script>
 <link href="marketing_campain_predictor_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="marketing_campain_predictor_files/libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="marketing_campain_predictor_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="marketing_campain_predictor_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="marketing_campain_predictor_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="marketing_campain_predictor_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="marketing_campain_predictor_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -164,7 +165,6 @@ div.csl-indent {
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
 <p>A logistic regression model (<span class="citation" data-cites="nick2007logistic">Nick and Campbell (<a href="#ref-nick2007logistic" role="doc-biblioref">2007</a>)</span>) was used to predict whether a marketing campaign will be successful or not. All original variables from the dataset were included in the analysis. Before fitting, numerical features were standardized with a StandardScaler, and categorical variables were converted to binary indicators via OneHotEncoder. The dataset was split into 80% training and 20% testing, and class imbalance was addressed by balancing class weights during model training. The model’s performance was evaluated using accuracy and ROC-AUC scores.</p>
-<p>The code used to perform this analysis and generate the accompanying report can be found here: https://github.com/Roccolee18/bank_marketing_group_24/blob/main/marketing_campain_predictor.ipynb</p>
 </section>
 </section>
 <section id="results-discussion" class="level1">
@@ -399,7 +399,7 @@ Figure&nbsp;4: Correlation matrix.
 <div id="fig-confusion-matrix" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-confusion-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/confusion_matrix.jpg" class="img-fluid figure-img">
+<img src="../results/figures/confusion_matrix.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-confusion-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Confusion matrix.
@@ -471,7 +471,7 @@ Table&nbsp;2: Classification results of the model.
 <div id="fig-feature-importance" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-feature-importance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../results/figures/feature_importance.jpg" class="img-fluid figure-img">
+<img src="../results/figures/feature_importance.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-feature-importance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6: Feature importance.
@@ -551,13 +551,14 @@ Susmaga, Robert. 2004. <span>“Confusion Matrix Visualization.”</span> In <em
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

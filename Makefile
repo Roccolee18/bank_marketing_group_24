@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all step_read_data step_preprocess step_data_validation step_EDA step_evaluation step_report clean
+.PHONY: all clean cl env build run up stop docker-build-push docker-build-local
 
 all: step_read_data step_preprocess step_data_validation step_EDA step_evaluation step_report
 
@@ -42,3 +42,49 @@ clean:
 	rm -f results/models/*
 	rm -f results/tables/*
 	rm -f report/marketing_campain_predictor.html
+	rm -rf report/marketing_campain_predictor_files
+	rm -rf src/__pycache__
+
+cl: ## create conda lock for multiple platforms
+	# the linux-aarch64 is used for ARM Macs using linux docker container
+	conda-lock lock \
+		--file environment.yml \
+		-p linux-64 \
+		-p osx-64 \
+		-p osx-arm64 \
+		-p win-64 \
+		-p linux-aarch64
+
+env: ## remove previous and create environment from lock file
+	# remove the existing env, and ignore if missing
+	conda env remove dockerlock || true
+	conda-lock install -n dockerlock conda-lock.yml
+
+build: ## build the docker image from the Dockerfile
+	docker build -t dockerlock --file Dockerfile .
+
+run: ## alias for the up target
+	make up
+
+up: ## stop and start docker-compose services
+	# by default stop everything before re-creating
+	make stop
+	docker-compose up -d
+
+stop: ## stop docker-compose services
+	docker-compose stop
+
+# docker multi architecture build rules (from Claude) -----
+
+docker-build-push: ## Build and push multi-arch image to Docker Hub (amd64 + arm64)
+	docker buildx build \
+		--platform linux/amd64,linux/arm64 \
+		--tag chendaniely/docker-condalock-jupyterlab:latest \
+		--tag chendaniely/docker-condalock-jupyterlab:local-$(shell git rev-parse --short HEAD) \
+		--push \
+		.
+
+docker-build-local: ## Build single-arch image for local testing (current platform only)
+	docker build \
+		--tag chendaniely/docker-condalock-jupyterlab:local \
+		.
