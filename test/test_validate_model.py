@@ -2,6 +2,11 @@ import pandas as pd
 import pytest
 import pandera as pa 
 
+import sys
+
+# Make sure the scripts directory is on the import path
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
 from scripts.validate_model import (
     validate_correct_data_format,
     validate_column_names,
