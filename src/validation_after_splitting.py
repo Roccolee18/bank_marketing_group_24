@@ -37,4 +37,4 @@ def validation_after_splitting(X_train, y_train, X_test, y_test):
                     print(f"     Details: {condition_result.details}")
         else:
             print("  No conditions set for this check")
-    return categorical_feats, numerical_feats
+    return categorical_feats, numerical_feats  
