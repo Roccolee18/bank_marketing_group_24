@@ -22,3 +22,5 @@ dependencies:
       - ucimlrepo==0.0.7
       - pandera==0.20.3
       - deepchecks==0.19.1
+      - pytest==7.0.*
+      - Pillow
