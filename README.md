@@ -64,50 +64,19 @@ Open the link in a new browser window to ensure the Docker image is set up prope
 
 The analysis has been split into several python scripts for ease of execution.
 
-To begin running the scripts, run the following commands in a new terminal, again, in the environment created by the docker container in the previous step. The order of execution ideally should be the following:
+To begin running the scripts, run the following commands in a new terminal, again, in the environment created by the docker container in the previous step:
 
-1.  Run data loading script:
+Run the entire pipeline with make by running the following command:
 
-```bash
-python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
+```
+make all
 ```
 
-2. Run data validation script:
-
-```bash
-python scripts/validate_model.py --input-path data/processed/bank_train.csv
-```
-
-3. Run split and preprocessing script:
-
-```bash
-python scripts/split_n_preprocess.py --raw-data data/raw/bank_marketing.csv --data-to data/processed --preprocessor-to results/models
-```
-
-4. Run eda script:
-
-```bash
-python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
-```
-
-5. Run fit and predict script:
-
-```bash
-python scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
-```
 
 The required arguments for each script can be found with the following command:
 
 ```bash
 python <script_name.py> --help
-```
-
-5. Generate the report and view it on your browser (Google Chrome is recommended):
-
-After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts. To generate the final html report, run the following command:
-
-```bash
-quarto render report/marketing_campain_predictor.qmd --to html
 ```
 
 After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
@@ -156,60 +125,19 @@ jl
 
 ### Running the analysis
 
-1.  Run the scripts
+The analysis has been split into several python scripts for ease of execution but can be run with only one make command.
 
-The analysis has been split into several python scripts for ease of execution.
+To begin running the scripts, run the following command in a new terminal in the git directory. **Ensure that the 522 environment created from the environment.yml file in the preivous step is active**
 
-To begin running the scripts, run the following commands in a new terminal in the git directory. **Ensure that the 522 environment created from the environment.yml file in the preivous step is active**
-The order of execution ideally should be the following:
+Run the entire pipeline with make by running the following command:
 
-1.  Run data loading script:
-
-```bash
-python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
 ```
-
-2. Run data validation script:
-
-```bash
-python scripts/validate_model.py --input-path data/processed/bank_train.csv
-```
-
-3. Run split and preprocessing script:
-
-```bash
-python scripts/split_n_preprocess.py --raw-data data/raw/bank_marketing.csv --data-to data/processed --preprocessor-to results/models
-```
-
-4. Run eda script:
-
-```bash
-python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
-```
-
-5. Run fit and predict script:
-
-```bash
-python scripts/fit_and_predict.py --save_location results/figures/ --preprocessor_pickle results/models/bank_preprocessor.pickle --train_dataset_path data/processed/bank_train.csv --test_dataset_path data/processed/bank_test.csv
-```
-
-The required arguments for each script can be found with the following command:
-
-```bash
-python <script_name.py> --help
-```
-
-2. Generate the report and view it on your browser (Google Chrome is recommended):
-
-After all scripts have been run, the .qmd report under the /report directory should be populated with the analysis results from the latest run of the scripts. To generate the final html report, run the following command:
-
-```bash
-quarto render report/marketing_campain_predictor.qmd --to html
+make all
 ```
 
 After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
 
-3. Deactivate the environment
+Deactivate the environment
 
 To return your environment back to its default state, run the following command:
 
