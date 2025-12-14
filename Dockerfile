@@ -5,9 +5,12 @@ FROM condaforge/miniforge3:latest
 COPY conda-lock.yml conda-lock.yml
 
 # setup conda-lock
-RUN conda install -n base -c conda-forge conda-lock -y \
+RUN apt-get update && apt-get install -y \
   curl \
-  make
+  make \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN conda install -n base -c conda-forge conda-lock -y
 
 # install packages from lockfile into dockerlock environment
 RUN conda-lock install -n dockerlock conda-lock.yml
