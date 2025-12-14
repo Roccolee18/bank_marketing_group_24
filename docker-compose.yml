@@ -1,9 +1,9 @@
 services:
   dockerlock:
+    image: roccolee18/522-group24-bank-marketing:latest
     build:
       context: .
       dockerfile: Dockerfile
-    image: dockerlock
     container_name: dockerlock
     ports:
       - "8888:8888"
