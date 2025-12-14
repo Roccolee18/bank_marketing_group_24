@@ -72,6 +72,25 @@ Run the entire pipeline with make by running the following command:
 make all
 ```
 
+This is basically running the scripts in this order:
+
+```bash
+python scripts/data_load.py --dataset_id 222 --output-path data/raw --output-name bank_marketing.csv
+
+python scripts/split_n_preprocess.py --raw-data data/raw/bank_marketing.csv --data-to data/processed --preprocessor-to results/models
+
+python scripts/validate_model.py --input-path data/processed/bank_train.csv
+
+python scripts/eda.py --data data/processed/bank_train.csv --plot-to results/figures
+
+python scripts/fit_and_predict.py --save_location results/figures/ \
+    --preprocessor_pickle results/models/bank_preprocessor.pickle \
+    --train_dataset_path data/processed/bank_train.csv \
+    --test_dataset_path data/processed/bank_test.csv
+
+quarto render report/marketing_campain_predictor.qmd --to html
+```
+
 
 The required arguments for each script can be found with the following command:
 
@@ -81,7 +100,7 @@ python <script_name.py> --help
 
 After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
 
-6. Stop the container
+5. Stop the container
 
 When finished, press Ctrl + C in the terminal to stop the Jupyter server and exit the container.
 
@@ -137,12 +156,18 @@ make all
 
 After that you can open the report ([report/marketing_campain_predictor.html](https://github.com/Roccolee18/bank_marketing_group_24/blob/main/report/marketing_campain_predictor.html)) on your browser to visualize it (Google Chrome is recommended).
 
-Deactivate the environment
+Deactivate the environment and clean the outputs:
 
 To return your environment back to its default state, run the following command:
 
 ```bash
 conda deactivate
+```
+
+To clean the outputs, run:
+
+```bash
+make clean
 ```
 
 ## **License**
