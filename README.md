@@ -170,6 +170,16 @@ To clean the outputs, run:
 make clean
 ```
 
+## **Testing**
+
+Some tests depend on files generated during the `make all` step. Therefore, in order to run the tests consider running the next three commands in the order shown below:
+
+```bash
+make clean
+make all
+pytest
+```
+
 ## **License**
 
 The “Predicting Marketing Campaign Response Using Logistic Regression” report contained in this repository is licensed under the MIT License, see [LICENSE](https://github.com/Roccolee18/bank_marketing_group_24/blob/writing-and-editing-code/LICENSE) for more information.
